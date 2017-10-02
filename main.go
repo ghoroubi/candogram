@@ -3,22 +3,29 @@ package main
 import (
 	"github.com/ghoroubi/mt"
 
+	"log"
+	"os"
+
 	"github.com/ghoroubi/mtx"
 	"github.com/gin-gonic/gin"
-	"fmt"
+	"github.com/jmoiron/sqlx"
 )
 
-var m *mtprotox.MTProto
-var nm *mtproto.MTProto
+var M *mtprotox.MTProto
+var Mx *mtproto.MTProto
+var LogFile *os.File
+var DB *sqlx.DB
 
 func main() {
 	//var err error
+	LoggerInit()
+	InitSend()
+	InitImport()
 	router := gin.Default()
 	//Connecting Second Object to DC
-Init()
-fmt.Println("Started")
+	log.Println("Started")
 	router.GET("/send", SendMessageController)
-	router.GET("/add/:phone", NewContactController)
+	router.GET("/new", NewContactController)
 
-	router.Run(":8181") // listen and serve on 0.0.0.0:8080
+	router.Run(":9191") // listen and serve on 0.0.0.0:8080
 }
